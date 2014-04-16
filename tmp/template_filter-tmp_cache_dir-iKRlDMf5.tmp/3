@@ -1,0 +1,1 @@
+export default Ember.Handlebars.compile("{{#each legislator in model}}\n	bob\n	{{legislator.firstName}}\n{{/each}}");

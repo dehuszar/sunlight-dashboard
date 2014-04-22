@@ -9,7 +9,8 @@ var App = Ember.Application.extend({
   // LOG_TRANSITIONS_INTERNAL: true,
   LOG_VIEW_LOOKUPS: true,
   modulePrefix: 'rep-dash', // TODO: loaded via config
-  Resolver: Resolver
+  Resolver: Resolver,
+  Store: DS.Store.extend()
 });
 
 export default App;

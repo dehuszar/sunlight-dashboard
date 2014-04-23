@@ -4,10 +4,11 @@ var attr 		= DS.attr,
 	belongsTo 	= DS.belongsTo;
 
 var Legislator = DS.Model.extend({
-	firstName: 		attr('string'),
-	lastName: 		attr('string'),
-	party: 			attr('string'),
-	bioguideId: 	attr('string')
+	birthday:  		attr('string'),
+	first_name: 	attr('string'),
+	last_name: 		attr('string'),
+	chamber: 		attr('string'),
+	party: 			attr('string')
 });
 
 export default Legislator;

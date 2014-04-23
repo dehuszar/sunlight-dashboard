@@ -1,0 +1,19 @@
+{{!-- 
+// We will have to add pagination support in the metadata
+
+The count is: {{!count}}
+Page #: {{!page.count}}
+{{!page.per_page}} per page --}}
+{{#each model}}
+	<article>
+		<h3>{{first_name}} {{last_name}}</h3>
+		<h4>{{chamber}}</h4>
+		<p>
+			<div>Party: {{party}}</div>
+			<div>Birthday: {{birthday}}</div>
+		</p>
+		
+		
+	</article>
+	<hr />
+{{/each}}

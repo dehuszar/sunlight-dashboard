@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<link rel="stylesheet" type="text/css" href="vendor/css/reset.css">
+		<link rel="stylesheet" type="text/css" href="app/css/main.css">
+
+		<script type="text/javascript" src="vendor/js/jquery-1.10.2.js"></script>
+		<script type="text/javascript" src="vendor/js/handlebars-1.1.2.js"></script>
+		<script type="text/javascript" src="vendor/js/ember-1.5.0.js"></script>
+		
+		<!-- qUnit -->
+		<script type="text/javascript" src="vendor/js/qunit-1.14.0.js"></script>
+		<link rel="stylesheet" type="text/css" href="vendor/css/qunit-1.14.0.css">
+	</head>
+	<body>
+		<!-- <div id="qunit"></div>
+		<div id="qunit-fixture"></div> -->
+		
+		<div id="application-container"></div>
+
+		<script type="text/x-handlebars">
+			<div class="application">
+				{{outlet}}
+			</div>
+		</script>
+
+
+
+
+		<script type="text/x-handlebars" data-template-name="personal">
+			{{header-navigation}}
+			<section class="content">
+
+				{{validated-text-field 
+					label="First Name" 
+					showInvalidBinding="controller.showInvalid"
+					slug="firstName" 
+					invalidMessage="Please provide your first name" 
+					valueBinding="model.firstName"}}
+
+				{{validated-text-field 
+					label="Last Name" 
+					showInvalidBinding="controller.showInvalid"
+					slug="lastName" 
+					invalidMessage="Please provide your last name" 
+					valueBinding="model.lastName"}}
+				
+				{{validated-text-field 
+					label="Middle Initial" 
+					slug="middleInitial" 
+					isRequired=false 
+					valueBinding="model.middleInitial"}}
+
+				{{validated-select 
+					label="Suffix" 
+					slug="suffix" 
+					isRequired=false 
+					prompt="Select one" 
+					options=suffixOptions 
+					valueBinding="model.suffix"}}
+
+				<hr>
+				
+				{{validated-text-field 
+					label="Address" 
+					showInvalidBinding="controller.showInvalid"
+					slug="address" 
+					invalidMessage="Please provide your address" 
+					valueBinding="model.address"}}
+
+				{{validated-text-field 
+					label="Address line 2" 
+					slug="addressContinued" 
+					isRequired=false 
+					valueBinding="model.addressContinued"}}
+
+				{{validated-text-field 
+					label="Unit" 
+					slug="unit" 
+					isRequired=false 
+					valueBinding="model.unit"}}
+
+				{{validated-text-field 
+					label="Zip Code" 
+					showInvalidBinding="controller.showInvalid"
+					slug="zipCode" 
+					invalidMessage="Please provide your zip code" 
+					valueBinding="model.zipCode"}}
+
+				{{validated-text-field 
+					label="City" 
+					showInvalidBinding="controller.showInvalid"
+					slug="city" 
+					invalidMessage="Please provide your city" 
+					valueBinding="model.city"}}
+				
+				{{validated-select 
+					label="State" 
+					showInvalidBinding="controller.showInvalid"
+					slug="state" 
+					invalidMessage="Please provide your state" 
+					prompt="Select State" 
+					options=states 
+					valueBinding="model.state"}}
+		
+				{{validated-text-field 
+					label="Date of Birth" 
+					showInvalidBinding="controller.showInvalid"
+					slug="dateOfBirth" 
+					invalidMessage="Please provide your date of birth" 
+					valueBinding="model.dateOfBirth"}}
+
+				<hr>
+				<button class="next" {{action "actionNext"}}>
+					Save and continue
+				</button>
+			</section>
+		</script>
+
+
+
+
+		<script type="text/x-handlebars" data-template-name="financial">
+			{{header-navigation selectedSlug="financial"}}
+			<section class="content">
+
+				{{validated-select 
+					label="Income Source" 
+					showInvalidBinding="controller.showInvalid"
+					slug="incomeSource" 
+					invalidMessage="Please provide your income source" 
+					prompt="Select one" 
+					options=incomeSources 
+					valueBinding="model.incomeSource"}}
+				
+				{{#if isOtherIncomeSource}}
+					{{validated-text-field 
+						label="Other" 
+						isRequired=false
+						slug="otherIncomeSource" 
+						valueBinding="model.otherIncomeSource"}}
+				{{/if}}
+
+				{{validated-text-field 
+					label="Employer" 
+					showInvalidBinding="controller.showInvalid"
+					slug="employer" 
+					invalidMessage="Please provide your employer" 
+					valueBinding="model.employer"}}
+
+				{{validated-select 
+					label="Types of Accounts" 
+					showInvalidBinding="controller.showInvalid"
+					slug="accountType" 
+					invalidMessage="Please provide account types" 
+					prompt="Select one" 
+					options=accountTypes 
+					valueBinding="model.accountType"}}
+
+				{{validated-text-field 
+					label="Gross Annual Income" 
+					showInvalidBinding="controller.showInvalid"
+					slug="grossAnnualIncome" 
+					invalidMessage="Please provide your gross annual income" 
+					valueBinding="model.grossAnnualIncome"}}
+
+				{{validated-select 
+					label="Residence Status" 
+					showInvalidBinding="controller.showInvalid"
+					slug="residenceStatus" 
+					invalidMessage="Please provide account residence status" 
+					prompt="Select one" 
+					options=residenceStatuses 
+					valueBinding="model.residenceStatus"}}
+				
+				{{#if isOtherResidenceStatuses}}
+					{{validated-text-field 
+						label="Monthly Housing Cost" 
+						isRequired=false
+						slug="monthlyHousingCost" 
+						valueBinding="model.monthlyHousingCost"}}
+				{{/if}}
+
+				<hr>
+
+				<button class="next" {{action "actionLinkTo" "personal"}}>
+					Back
+				</button> | 
+				<button class="next" {{action "actionNext"}}>
+					Save and continue
+				</button>
+			</section>
+		</script>
+
+		<script type="text/x-handlebars" data-template-name="contact">
+			{{header-navigation selectedSlug="contact"}}
+			<section class="content">
+
+				{{validated-text-field 
+					label="Primary Phone" 
+					showInvalidBinding="controller.showInvalid"
+					slug="primaryPhone" 
+					invalidMessage="Please provide your primary phone number" 
+					valueBinding="model.primaryPhone"}}
+
+				{{validated-text-field 
+					label="Secondary Phone" 
+					slug="secondaryPhone" 
+					isRequired=false
+					valueBinding="model.secondaryPhone"}}
+
+				{{validated-text-field 
+					label="Email" 
+					showInvalidBinding="controller.showInvalid"
+					slug="email" 
+					invalidMessage="Please provide your email" 
+					valueBinding="model.email"}}
+
+				<hr>
+				<button class="next" {{action "actionLinkTo" "financial"}}>
+					Back
+				</button> | 
+				<button class="next" {{action "actionNext"}}>
+					Save and continue
+				</button>
+			</section>
+		</script>
+
+		<script type="text/x-handlebars" data-template-name="security">
+			{{header-navigation selectedSlug="security"}}
+			<section class="content">
+
+				{{validated-text-field 
+					label="Social Security #" 
+					showInvalidBinding="controller.showInvalid"
+					slug="socialSecurityNumber" 
+					invalidMessage="Please provide your primary social security number" 
+					valueBinding="model.socialSecurityNumber"}}
+
+				{{validated-text-field 
+					label="What is your mother's maiden name?" 
+					showInvalidBinding="controller.showInvalid"
+					slug="securityAnswer" 
+					invalidMessage="Please provide your mother's maiden name" 
+					valueBinding="model.securityAnswer"}}
+
+				<hr>
+				<button class="next" {{action "actionLinkTo" "contact"}}>
+					Back
+				</button> | 
+				<button class="next" {{action "actionNext"}}>
+					Save and continue
+				</button>
+			</section>
+		</script>
+
+		<script type="text/x-handlebars" data-template-name="review">
+			{{header-navigation selectedSlug="security"}}
+			<section class="content">
+				Review your information
+				<hr>
+				<button class="next" {{action "actionNext"}}>
+					Save and continue
+				</button>
+			</section>
+		</script>
+
+
+
+
+
+
+		<script type="text/x-handlebars" data-template-name="components/header-navigation">
+			<header>
+				<h1>Get the Franken Banken Rewards Card!</h1>
+				<p>You are 5 steps away from freedom.</p>
+				<ul class="navigation">
+					{{#each tab in tabs}}
+						{{navigation-button slug=tab.slug selectedSlug=selectedSlug title=tab.title}}
+					{{/each}}
+				</ul>
+			</header>
+		</script>
+		
+		<script type="text/x-handlebars" data-template-name="components/navigation-button">
+			{{title}}
+		</script>
+
+		<script type="text/x-handlebars" data-template-name="components/validated-text-field">
+			<label {{bind-attr for=slug}}>{{label}}: </label>{{input type="text" name=slug valueBinding="value"}}
+			{{#if isRequired}} * {{/if}}
+			{{#if isValid}}<span class="invalid-message"> {{invalidMessage}}</span>{{/if}}
+		</script>
+
+		<script type="text/x-handlebars" data-template-name="components/validated-select">
+			<label {{bind-attr for=slug}}>{{label}}: </label> 
+			{{view SelectView 
+				viewName="select" 
+				contentBinding='options' 
+				optionValuePath='content.id'
+				optionLabelPath='content.name'
+				name=slug
+				valueBinding="value"
+			}}
+			{{#if isRequired}} * {{/if}}
+			{{#if isValid}}<span class="invalid-message"> {{invalidMessage}}</span>{{/if}}
+		</script>
+
+
+
+		<!-- Include App and Tests -->
+		<script type="text/javascript" src="app/js/application.js"></script>
+		<script type="text/javascript" src="tests/tests.js"></script>
+	</body>
+</html>

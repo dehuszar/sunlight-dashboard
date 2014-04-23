@@ -43,6 +43,12 @@ Also we can find a user's reps based on address:
     });
     // Returns all congress folks for that address
 
+Or zip code:
+    this.store.find('legislator', {
+	    address: '60647'
+    });
+    // Returns all congress folks for that zipcode
+
 
 
 

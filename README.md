@@ -14,8 +14,9 @@ In a seperate tab, move into api folder.
 
 Install node and npm (if you haven't already).  Then install dependencies and run it!
 
-`npm install
-node server`
+`npm install`
+
+`node server`
 
 
 

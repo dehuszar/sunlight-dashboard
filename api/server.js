@@ -4,6 +4,7 @@
 
 
 var express = 		require('express'),
+	geocoder = 		require('geocoder'),
 	request = 		require('request'),
 	http = 			require('http'),
 	querystring = 	require('querystring'),
@@ -47,9 +48,9 @@ var makeRequest = function(res, endpoint, options){
 
 // Return Sunlight Foundation options
 // ========================================================
-var createOptions = function(req, res, idKey){
+var createOptions = function(req, res, idKey, endpointOverride){
 	var params = 	req.path.split('/'),
-		endpoint = 	params[2],
+		endpoint = 	endpointOverride || params[2],
 		id = 		params[3],
 		query;
 
@@ -79,12 +80,35 @@ var createOptions = function(req, res, idKey){
 
 // ROUTES
 // ========================================================
-app.get('/api/legislators/*', function(req, res) {
-	makeRequest(res, 'legislators', createOptions(req, res, 'bioguide_id'));
+app.get('/api/legislators*', function(req, res) {
+	
+	// If there is an address, find the coords before making query
+	if(req.query.address){
+		
+		// Make the location request
+		geocoder.geocode(req.query.address, function ( err, data ) {
+
+			// Get coords
+			var coords = data.results[0].geometry.location;
+
+			// Add cords to query
+			req.query.latitude = coords.lat;
+			req.query.longitude = coords.lng;
+
+			// Remove address, its no longer needed
+			delete req.query.address;
+
+			makeRequest(res, 'legislators', createOptions(req, res, 'bioguide_id', 'legislators/locate'));
+		});
+
+	} else {
+		// No address?  Handle it normally
+		makeRequest(res, 'legislators', createOptions(req, res, 'bioguide_id'));	
+	}
 });
 
 
-// Wildcard route
+//Wildcard route
 app.get('/api/*', function(req, res) {
 	var endpoint = req.path.split('/')[2];
 	makeRequest(res, endpoint, createOptions(req, res));

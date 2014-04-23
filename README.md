@@ -27,7 +27,7 @@ Many of the normal Ember requests work just fine.
 
 So we can make queries and requests by ID (just with legislators right now) or using the ember way of setting up queries.
 
-    this.store.find('legislators', {
+    this.store.find('legislator', {
 	    bioguide_id: J000296
     });
     // Makes this request to api 
@@ -35,6 +35,13 @@ So we can make queries and requests by ID (just with legislators right now) or u
 
     // Which routes to this request to Sunlight 
     // https://congress.api.sunlightfoundation.com/legislators?bioguide_id=J000296
+
+Also we can find a user's reps based on address:
+
+    this.store.find('legislator', {
+	    address: '1740 Washington Rd, MI'
+    });
+    // Returns all congress folks for that address
 
 
 

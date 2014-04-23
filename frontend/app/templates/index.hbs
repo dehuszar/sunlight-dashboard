@@ -4,7 +4,21 @@
 The count is: {{!count}}
 Page #: {{!page.count}}
 {{!page.per_page}} per page --}}
-{{#each model}}
+
+
+
+<article>
+	{{!-- 
+		Convert Address to lat and lon
+		Pass back lat and lon to API
+	 --}}
+
+	{{input type="text" placeholder="Enter Address" valueBinding="addressValue"}}
+	<button {{action "actionSearch"}}>Find</button>
+</article>
+
+
+{{#each results}}
 	<article>
 		<h3>{{first_name}} {{last_name}}</h3>
 		<h4>{{chamber}}</h4>

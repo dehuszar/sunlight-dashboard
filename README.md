@@ -9,11 +9,13 @@ Install Ember-CLI to get started and follow [their documentation](http://iamstef
 
 #For the API
 In a seperate tab, move into api folder.
+
 `cd api`
 
 Install node and npm (if you haven't already).  Then install dependencies and run it!
-`npm install`
-`node server`
+
+`npm install
+node server`
 
 
 

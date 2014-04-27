@@ -12,8 +12,29 @@ var express = 		require('express'),
 
 
 
-// Makes request based on options
+// Functions
 // ========================================================
+
+// Get influence explorer id
+var getInfluenceId = function(bioGuideID, callback){
+	
+	var options = {
+		url: 'http://transparencydata.com/api/1.0/entities/id_lookup.json?bioguide_id=' + bioGuideID + '&apikey=66603c029b1b49428da28d6a783f795e',
+		method: 'GET'
+	};
+
+	request(options, function(error, response, body){
+
+		if (!error && response.statusCode == 200) {
+			var id = JSON.parse(body)[0].id;
+			callback(id);
+		} else {
+			console.log(' ! NO ID FROM INFLUENCE EXPLORER')
+		}
+	});
+};
+
+// Makes request based on options
 var makeRequest = function(res, endpoint, options){
 
 	// Triggers upon a response 
@@ -47,7 +68,6 @@ var makeRequest = function(res, endpoint, options){
 
 
 // Return Sunlight Foundation options
-// ========================================================
 var createOptions = function(req, res, idKey, endpointOverride){
 	var params = 	req.path.split('/'),
 		endpoint = 	endpointOverride || params[2],
@@ -74,7 +94,6 @@ var createOptions = function(req, res, idKey, endpointOverride){
 
 	return options;
 }
-
 
 
 
@@ -108,12 +127,47 @@ app.get('/api/legislators*', function(req, res) {
 });
 
 
+app.get('/api/contributors*', function(req, res) {
+	
+	if(req.query.bioguide_id){
+		
+		// Get appropriate id and do something with it
+		getInfluenceId(req.query.bioguide_id, function(id){
+			console.log(' ** Influence Explorer ID: ' + id);
+
+
+			// ***************************************************************
+			// Make this request to get the contributors
+			// Accepts limit and cycle (like 2012)
+			// http://transparencydata.com/api/1.0/aggregates/pol/bef0722c43dc482299d75fa90f163944/contributors.json?apikey=66603c029b1b49428da28d6a783f795e
+			// ***************************************************************
+
+			var options = {
+				url: 'http://transparencydata.com/api/1.0/aggregates/pol/' + id + '/contributors.json?apikey=66603c029b1b49428da28d6a783f795e',
+				method: 'GET'
+			};
+
+			request(options, function(error, response, body){
+				if (!error && response.statusCode == 200) {
+					res.setHeader('Access-Control-Allow-Origin', 'http://0.0.0.0:4200');
+					var responseData = {
+						contributors: JSON.parse(body)
+					};
+					res.send(JSON.stringify(responseData));
+				}
+			});
+
+			
+		})
+	}
+});
+
+
 //Wildcard route
 app.get('/api/*', function(req, res) {
 	var endpoint = req.path.split('/')[2];
 	makeRequest(res, endpoint, createOptions(req, res));
 });
-
 
 
 

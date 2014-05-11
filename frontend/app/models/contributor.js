@@ -1,4 +1,4 @@
-// Contributor - Correspondes with: http://sunlightlabs.github.io/datacommons/politicians.html
+// Contributor
 var attr 		= DS.attr,
 	hasMany 	= DS.hasMany,
 	belongsTo 	= DS.belongsTo;

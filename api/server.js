@@ -1,6 +1,8 @@
 // TODO
 // ==================================
-// I'm sure there more here to do
+//  - More organized endpoint requests
+//  - Pagination support
+//  - Add more endpoints
 
 
 var express = 		require('express'),
@@ -99,10 +101,48 @@ var createOptions = function(req, res, idKey, endpointOverride){
 
 // ROUTES
 // ========================================================
+app.get('/api/locations*', function(req, res) {
+	if(req.query.address){
+
+		// Make the location request
+		geocoder.geocode(req.query.address, function ( err, data ) {
+			var parsedLocations = [];
+
+			data.results.map(function(location){
+
+				var coords = location.geometry.location,
+					isInUSA = location.address_components.some(function(component){
+						return component.short_name === 'US';
+					});
+
+
+				if(isInUSA)
+					parsedLocations.push({
+						location: location.formatted_address,
+						latitude: coords.lat,
+						longitude: coords.lng
+					});
+
+			});
+
+			res.send({ locations: parsedLocations });
+		});
+	}
+});
+
+
+
 app.get('/api/legislators*', function(req, res) {
 	
-	// If there is an address, find the coords before making query
-	if(req.query.address){
+	if(req.query.latitude && req.query.longitude){
+		// To locate use Coords primarily
+
+		// Use the locate api in Sunlight
+		makeRequest(res, 'legislators', createOptions(req, res, 'bioguide_id', 'legislators/locate'));
+		
+	}else if(req.query.address){
+		// If there is an address, find the coords based on that 
+		// address before making query
 		
 		// Make the location request
 		geocoder.geocode(req.query.address, function ( err, data ) {
@@ -127,20 +167,16 @@ app.get('/api/legislators*', function(req, res) {
 });
 
 
+
 app.get('/api/contributors*', function(req, res) {
 	
 	if(req.query.bioguide_id){
 		
 		// Get appropriate id and do something with it
 		getInfluenceId(req.query.bioguide_id, function(id){
+
+
 			console.log(' ** Influence Explorer ID: ' + id);
-
-
-			// ***************************************************************
-			// Make this request to get the contributors
-			// Accepts limit and cycle (like 2012)
-			// http://transparencydata.com/api/1.0/aggregates/pol/bef0722c43dc482299d75fa90f163944/contributors.json?apikey=66603c029b1b49428da28d6a783f795e
-			// ***************************************************************
 
 			var options = {
 				url: 'http://transparencydata.com/api/1.0/aggregates/pol/' + id + '/contributors.json?apikey=66603c029b1b49428da28d6a783f795e',
@@ -163,11 +199,15 @@ app.get('/api/contributors*', function(req, res) {
 });
 
 
+
 //Wildcard route
 app.get('/api/*', function(req, res) {
 	var endpoint = req.path.split('/')[2];
 	makeRequest(res, endpoint, createOptions(req, res));
 });
+
+
+
 
 // Set up port
 // ========================================================

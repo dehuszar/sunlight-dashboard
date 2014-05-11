@@ -7,18 +7,17 @@
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <script>
-      window.ENV = {{ENV}};
-      document.write('<base href="' + ENV.rootURL + '" />');
-    </script>
+    {{BASE_TAG}}
 
     <link rel="stylesheet" href="assets/app.css">
-    <link rel="stylesheet" href="assets/main.css">
-    <script src="assets/app.js"></script>
   </head>
   <body>
     <script>
-      window.RepDash = require('rep-dash/main')['default']('rep-dash');
+      window.ENV = {{ENV}};
+    </script>
+    <script src="assets/app.js"></script>
+    <script>
+      window.RepDash = require('rep-dash/app')['default'].create(ENV.APP);
     </script>
   </body>
 </html>

@@ -25,6 +25,13 @@ Page #: {{!page.count}}
 			<div>Party: {{party}}</div>
 			<div>Birthday: {{birthday}}</div>
 		</p>
+		<ul>
+			{{#each contributors.content}}
+				<li>{{name}} - ${{total_amount}}</li>
+			{{else}}
+				<li>Loading...</li>
+			{{/each}}
+		</ul>
 		
 		
 	</article>

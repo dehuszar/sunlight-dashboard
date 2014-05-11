@@ -26,6 +26,9 @@ generate template profile
 generate view index
 ```
 
+We also support coffeescript templates by passing a `coffee:true` parameter
+to any of the generators.
+
 That's pretty much everything.
 
 Models were removed, I (or you) will be creating a different generator

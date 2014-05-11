@@ -169,8 +169,6 @@ app.get('/api/*', function(req, res) {
 	makeRequest(res, endpoint, createOptions(req, res));
 });
 
-
-
 // Set up port
 // ========================================================
 var server = app.listen(3000, function() {

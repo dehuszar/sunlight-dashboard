@@ -13,11 +13,19 @@ generator.before = function(next, env) {
   }, env);
 };
 
-generator.templates = [
-  app+'/components/component.js.hbs',
-  app+'/templates/components/component.hbs.hbs',
-  'tests/unit/components/component-tests.js.hbs'
-];
+generator.templates = function(next, env) {
+  var extension = 'js';
+
+  if(env.params.coffee === 'true') {
+    extension = 'coffee';
+  }
+
+  next([
+    app+'/components/component.'+extension+'.hbs',
+    app+'/templates/components/component.hbs.hbs',
+    'tests/unit/components/component-tests.js.hbs'
+  ]);
+}
 
 generator.savePath = function(next, env, template) {
   parent.savePath(function(savePath) {

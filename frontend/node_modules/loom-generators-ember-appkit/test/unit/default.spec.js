@@ -46,7 +46,7 @@ describe('default generator', function() {
 
   describe('template', function() {
     it('finds the right template for appendable object types', function(done) {
-      var env = {name: 'controller'};
+      var env = {name: 'controller', params: {}};
       generator.template(function(template) {
         template.should.equal('app/controllers/controller.js.hbs');
         done();
@@ -54,7 +54,7 @@ describe('default generator', function() {
     });
 
     it('finds the right template for non-appendable object types', function(done) {
-      var env = {name: 'model'};
+      var env = {name: 'model', params: {}};
       generator.template(function(template) {
         template.should.equal('app/models/model.js.hbs');
         done();

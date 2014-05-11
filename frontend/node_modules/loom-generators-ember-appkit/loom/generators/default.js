@@ -32,8 +32,14 @@ generator.present = function(next, env) {
 };
 
 generator.template = function(next, env) {
-  var plural = inflector.pluralize(env.name);
-  next(app+'/'+plural+'/'+env.name+'.js.hbs');
+  var plural = inflector.pluralize(env.name),
+      extension = 'js';
+
+  if(env.params.coffee === 'true') {
+    extension = 'coffee';
+  }
+
+  next(app+'/'+plural+'/'+env.name+'.'+extension+'.hbs');
 };
 
 function appendable(generatorName) {

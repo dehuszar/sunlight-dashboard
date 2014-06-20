@@ -40,7 +40,7 @@ export default Ember.Component.extend({
 			this.set('selection', selection);
 		}
 
-		console.log(this.get('selection'))
+		console.log(this.get('selection'));
 	}
 
 

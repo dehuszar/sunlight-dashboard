@@ -8,15 +8,10 @@ Page #: {{!page.count}}
 
 
 <article>
-	{{!-- 
-		Convert Address to lat and lon
-		Pass back lat and lon to API
-	 --}}
-
 	{{input type="text" placeholder="Enter Address or Zipcode" valueBinding="addressValue"}}
 	<button {{action "actionSearch"}}>Find</button>
 </article>
-
+{{typeahead-component store=store modelName="location" displayPath="address"}}
 {{#each results}}
 	<article>
 		<h3>{{first_name}} {{last_name}}</h3>

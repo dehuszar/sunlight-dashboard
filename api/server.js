@@ -106,7 +106,8 @@ app.get('/api/locations*', function(req, res) {
 
 		// Make the location request
 		geocoder.geocode(req.query.address, function ( err, data ) {
-			var parsedLocations = [];
+			var parsedLocations = [],
+				index = 1;
 
 			data.results.map(function(location){
 
@@ -116,15 +117,20 @@ app.get('/api/locations*', function(req, res) {
 					});
 
 
-				if(isInUSA)
+				if(isInUSA){
 					parsedLocations.push({
-						location: location.formatted_address,
+						id: index,
+						address: location.formatted_address,
 						latitude: coords.lat,
 						longitude: coords.lng
 					});
 
+					index+=1;
+				}
+
 			});
 
+			res.setHeader('Access-Control-Allow-Origin', 'http://0.0.0.0:4200');
 			res.send({ locations: parsedLocations });
 		});
 	}
